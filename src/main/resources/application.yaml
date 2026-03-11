@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: E-COM # Application name
+
+  servlet:
+    multipart:
+      max-file-size: 5MB # Maximum file size for uploads
+      max-request-size: 10MB # Maximum request size for uploads
+
+  h2:
+    console:
+      enabled: true # Enables the H2 database web console for in-browser access
+
+  datasource:
+    url: jdbc:h2:mem:ecom # In-memory H2 database URL
+
+  jpa:
+    show-sql: false # Show SQL statements in the console/logs
+    properties:
+      hibernate:
+        format_sql: false # Format SQL statements for better readability
+    hibernate:
+      ddl-auto: update # Automatically update the database schema based on entity definitions when application re-start.
+
+api:
+  base-path: /api # Base path for all API endpoints
+  version: v1     # API version
+
+
+file:
+    upload-directory: uploads/products # Directory for storing uploaded files
+    max-file-size: 5242880 # Maximum file size in bytes (5MB)

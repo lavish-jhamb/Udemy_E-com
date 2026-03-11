@@ -1,0 +1,45 @@
+Learn concepts:
+--------------
+
+1.) ResponseBodyAdvice - It is an interface in Spring Framework that allows you to customize the response body before it is sent to the client.
+                         It provides a way to modify the response body based on certain conditions, such as the type of the response or the presence of specific annotations.
+
+
+
+
+
+
+
+
+
+
+
+
+Improvements:
+-------------
+
+1.) Support internationalization (i18n) error code and messages.
+
+2.) Message creation logic inside controller, move it elsewhere, keep controller clean.
+
+3.) Clients shouldn't send createdAt in requests
+    specialPrice is calculated, not user input
+    Security: exposes internal system fields
+    Fix: Separate into RequestProductDTO and ResponseProductDTO. - DONE
+
+4.) Add production grade logging with @Slf4j and log important events, errors, and debug information.
+
+5.) Add metadata to responses, such as timestamps, request IDs, and pagination info for better client-side handling and debugging.
+
+
+
+
+
+
+AI Suggested improvements:
+-------------------------
+✅ Add logging (@Slf4j)
+✅ Add JavaDoc
+✅ Add Swagger/OpenAPI annotations
+✅ Move business logic to services
+✅ Standardized response handling
