@@ -30,3 +30,12 @@ api:
 file:
     upload-directory: uploads/products # Directory for storing uploaded files
     max-file-size: 5242880 # Maximum file size in bytes (5MB)
+
+# ── JWT configuration ────────────────────────────────────────────────────────
+# Replace secret-key with a cryptographically random value of ≥32 characters
+# before deploying to any non-local environment.
+application:
+  security:
+    jwt:
+      secret-key: "change-this-secret-key-to-a-random-256-bit-value-in-production!"
+      expiration: 86400000   # 24 hours in milliseconds
