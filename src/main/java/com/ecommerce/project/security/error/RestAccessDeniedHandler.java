@@ -1,7 +1,10 @@
 package com.ecommerce.project.security.error;
 
+import com.ecommerce.project.payload.response.common.Failure;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -12,26 +15,31 @@ import java.time.LocalDateTime;
 @Component
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
+    private final ObjectMapper objectMapper;
+
+    public RestAccessDeniedHandler(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     @Override
     public void handle(
             HttpServletRequest request,
             HttpServletResponse response,
             AccessDeniedException accessDeniedException) throws IOException {
 
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setContentType("application/json");
-        response.getWriter().write(buildJson(
-                403, "Forbidden",
+        Failure body = new Failure(
+                LocalDateTime.now(),
+                request.getRequestURI(),
+                HttpStatus.FORBIDDEN.value(),
+                false,
+                HttpStatus.FORBIDDEN.getReasonPhrase(),
+                null,
                 "You do not have permission to access this resource",
-                request.getRequestURI()));
-    }
+                null
+        );
 
-    private String buildJson(int status, String error, String message, String path) {
-        return "{\"status\":" + status
-                + ",\"error\":\"" + error + "\""
-                + ",\"message\":\"" + message + "\""
-                + ",\"path\":\"" + path + "\""
-                + ",\"timestamp\":\"" + LocalDateTime.now() + "\"}"
-                ;
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setContentType("application/json;charset=UTF-8");
+        objectMapper.writeValue(response.getWriter(), body);
     }
 }

@@ -1,0 +1,9 @@
+# ── Dev profile overrides ─────────────────────────────────────────────────────
+# This file is only loaded when the 'dev' Spring profile is active.
+# NEVER commit real secrets here. This file is for local development only.
+# Activate with: -Dspring.profiles.active=dev  OR  SPRING_PROFILES_ACTIVE=dev
+
+application:
+  security:
+    jwt:
+      secret-key: "dev-only-insecure-key-do-not-use-in-production-replace-me!"

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class CategoryController {
         return Success.of(HttpStatus.OK, message, categories);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/categories")
     public ResponseEntity<Success<CategoryResponse>> createCategory(@Valid @RequestBody CategoryRequest categoryRequest) {
         log.info("Creating category with name: {}", categoryRequest.getName());
@@ -51,6 +53,7 @@ public class CategoryController {
         return Success.of(HttpStatus.CREATED, "category with name '%s' created successfully".formatted(categoryRequest.getName()), savedCategory);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<Success<CategoryResponse>> deleteCategory(@PathVariable @Positive int id) {
         log.info("Deleting category with ID: {}", id);
@@ -58,6 +61,7 @@ public class CategoryController {
         return Success.of(HttpStatus.OK, "category deleted successfully with id %s".formatted(id), categoryDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/categories/{id}")
     public ResponseEntity<Success<CategoryResponse>> updateCategory(@Valid @RequestBody CategoryRequest categoryRequest, @PathVariable @Positive int id) {
         log.info("Updating category with ID: {} and name: {}", id, categoryRequest.getName());

@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
                 request.getRequestURI(),
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 ErrorCode.INTERNAL_ERROR.name(),
-                ex.getMessage()
+                "An unexpected error occurred. Please try again later."
         );
     }
 

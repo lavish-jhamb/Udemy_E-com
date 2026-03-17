@@ -1,7 +1,10 @@
 package com.ecommerce.project.security.error;
 
+import com.ecommerce.project.payload.response.common.Failure;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -12,26 +15,31 @@ import java.time.LocalDateTime;
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
+    private final ObjectMapper objectMapper;
+
+    public RestAuthenticationEntryPoint(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     @Override
     public void commence(
             HttpServletRequest request,
             HttpServletResponse response,
             AuthenticationException authException) throws IOException {
 
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        response.getWriter().write(buildJson(
-                401, "Unauthorized",
+        Failure body = new Failure(
+                LocalDateTime.now(),
+                request.getRequestURI(),
+                HttpStatus.UNAUTHORIZED.value(),
+                false,
+                HttpStatus.UNAUTHORIZED.getReasonPhrase(),
+                null,
                 "Full authentication is required to access this resource",
-                request.getRequestURI()));
-    }
+                null
+        );
 
-    private String buildJson(int status, String error, String message, String path) {
-        return "{\"status\":" + status
-                + ",\"error\":\"" + error + "\""
-                + ",\"message\":\"" + message + "\""
-                + ",\"path\":\"" + path + "\""
-                + ",\"timestamp\":\"" + LocalDateTime.now() + "\"}"
-                ;
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json;charset=UTF-8");
+        objectMapper.writeValue(response.getWriter(), body);
     }
 }

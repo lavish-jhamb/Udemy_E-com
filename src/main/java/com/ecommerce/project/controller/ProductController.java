@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,6 +91,7 @@ public class ProductController {
         return Success.of(HttpStatus.OK, "product deleted successfully with id %s".formatted(id), product);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SELLER')")
     @PostMapping("/products/{id}/image")
     public ResponseEntity<Success<FileUploadResponse>> uploadProductImage(@PathVariable int id, @RequestParam("file") MultipartFile file) {
         log.info("Starting file upload for product ID: {}", id);

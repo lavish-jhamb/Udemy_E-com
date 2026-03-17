@@ -35,7 +35,7 @@ public class DataSeeder implements ApplicationRunner {
         userRole.setRoles(Roles.ROLE_USER);
 
         Role adminRole = new Role();
-        userRole.setRoles(Roles.ROLE_ADMIN);
+        adminRole.setRoles(Roles.ROLE_ADMIN);
 
         User user = new User();
         user.setName("user");
